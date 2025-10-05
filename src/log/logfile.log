@@ -1,0 +1,6 @@
+[+2025-10-05 12:58:26] [INFO ] This is an info message
+[+2025-10-05 12:58:26] [WARN ] This is a warning message
+[+2025-10-05 12:58:26] [ERROR] This is an error message
+[+2025-10-05 12:58:26] [FATAL] This is a fatal message
+[+2025-10-05 12:58:26] [INFO ] User alice logged in with ID 12345
+[+2025-10-05 12:58:26] [WARN ] Memory usage is at 85%
