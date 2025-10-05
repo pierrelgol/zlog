@@ -113,7 +113,6 @@ pub const Logger = struct {
         self.time.now();
         var time_buffer: [64]u8 = undefined;
         const time_str = std.fmt.bufPrint(&time_buffer, "{f}", .{self.time}) catch return;
-        const lvl_str = lvl.stringFromLogLevel();
 
         var stderr_buffer: [64]u8 = undefined;
         var stderr_writer = std.fs.File.stderr().writer(&stderr_buffer);
@@ -121,9 +120,13 @@ pub const Logger = struct {
 
         self.mutex.lock();
         defer self.mutex.unlock();
-        nosuspend stderr.print("[{s}] {s} " ++ str ++ "\n", .{ time_str, lvl_str } ++ args) catch return;
-        if (self.file) |file| {
-            nosuspend file.print("[{s}] {s} " ++ str ++ "\n", .{ time_str, lvl_str } ++ args) catch return;
+        {
+            nosuspend stderr.print("[{s}] {s} " ++ str ++ "\n", .{ time_str, lvl.coloredStringFromLogLevel() } ++ args) catch return;
+            if (self.file) |file| {
+                nosuspend file.print("[{s}] {s} " ++ str ++ "\n", .{ time_str, lvl.stringFromLogLevel() } ++ args) catch return;
+                file.flush() catch return;
+            }
+            stderr.flush() catch return;
         }
     }
 

@@ -4,10 +4,16 @@ const zlog = @import("zlog");
 pub fn main() !void {
     // Create a logger that logs to console only
     const tz = try zlog.zdt.Timezone.tzLocal(null);
-    var logger = zlog.log.Logger.init(null, tz, .debug);
+
+    var logfile_buffer: [128]u8 = undefined;
+    var logfile = try std.fs.cwd().createFile("logfile.log", .{});
+    defer logfile.close();
+    var logfile_writer = logfile.writer(&logfile_buffer);
+    const log = &logfile_writer.interface;
+
+    var logger = zlog.log.Logger.init(log, tz, .debug);
 
     // Test different log levels
-    logger.debug("This is a debug message", .{});
     logger.info("This is an info message", .{});
     logger.warn("This is a warning message", .{});
     logger.err("This is an error message", .{});
