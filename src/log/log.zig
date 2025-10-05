@@ -96,12 +96,14 @@ pub const Logger = struct {
     file: ?*std.Io.Writer,
     time: LogTime,
     level: LogLevel,
+    mutex: std.Thread.Mutex,
 
     pub fn init(file: ?*std.Io.Writer, time_zone: ?zdt.Timezone, level: LogLevel) Logger {
         return .{
             .file = file,
             .time = LogTime.init(time_zone),
             .level = level,
+            .mutex = .{},
         };
     }
 
@@ -114,10 +116,12 @@ pub const Logger = struct {
         const lvl_str = lvl.stringFromLogLevel();
 
         var stderr_buffer: [64]u8 = undefined;
-        const stderr = std.debug.lockStderrWriter(&stderr_buffer);
-        defer std.debug.unlockStderrWriter();
-        nosuspend stderr.print("[{s}] {s} " ++ str ++ "\n", .{ time_str, lvl_str } ++ args) catch return;
+        var stderr_writer = std.fs.File.stderr().writer(&stderr_buffer);
+        const stderr = &stderr_writer.interface;
 
+        self.mutex.lock();
+        defer self.mutex.unlock();
+        nosuspend stderr.print("[{s}] {s} " ++ str ++ "\n", .{ time_str, lvl_str } ++ args) catch return;
         if (self.file) |file| {
             nosuspend file.print("[{s}] {s} " ++ str ++ "\n", .{ time_str, lvl_str } ++ args) catch return;
         }
