@@ -1,0 +1,17 @@
+.{
+    .name = .zlog,
+    .version = "0.0.0",
+    .fingerprint = 0x55b82e3313092202,
+    .minimum_zig_version = "0.16.0-dev.600+12ed0ff1e",
+    .dependencies = .{
+        .zdt = .{
+            .url = "https://codeberg.org/FObersteiner/zdt/archive/v0.8.1.tar.gz",
+            .hash = "zdt-0.8.1-xr0_vAxUDwCJRDh9pcAS_mdZBIsvcGTtN-K8JJSWY4I6",
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}
