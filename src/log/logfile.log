@@ -1,6 +1,7 @@
-[+2025-10-05 12:58:26] [INFO ] This is an info message
-[+2025-10-05 12:58:26] [WARN ] This is a warning message
-[+2025-10-05 12:58:26] [ERROR] This is an error message
-[+2025-10-05 12:58:26] [FATAL] This is a fatal message
-[+2025-10-05 12:58:26] [INFO ] User alice logged in with ID 12345
-[+2025-10-05 12:58:26] [WARN ] Memory usage is at 85%
+[+2025-10-20 13:47:32] [TRACE] main.zig:33: This trace with source goes to both stderr and logfile.log
+[+2025-10-20 13:47:32] [TRACE] This trace without source goes to both stderr and logfile.log
+[+2025-10-20 13:47:32] [INFO ] Check logfile.log to see all messages with timestamps
+[+2025-10-20 13:47:32] [WARN ] This warning SHOULD appear
+[+2025-10-20 13:47:32] [ERROR] This error SHOULD appear
+[+2025-10-20 13:47:32] [ERROR] This error goes only to file, not stderr
+[+2025-10-20 13:47:32] [FATAL] This fatal also only goes to file
